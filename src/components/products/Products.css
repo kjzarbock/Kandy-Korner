@@ -12,6 +12,9 @@
     line-height: 1.5;
 }
 
+.product:hover {
+    background-color: rgb(255 255 255 / 25%);
+}
 
 .tag {
     color: #404040;
