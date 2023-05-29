@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import "./Products.css"
 import { useNavigate } from "react-router-dom"
-import { ProductForm } from "./ProductForm"
+
 
 export const ProductsList = () => {
     const [products, setProducts] = useState([])
@@ -75,7 +75,7 @@ export const ProductsList = () => {
                     (product) => {
                         return <section id="product" className="product" key={product.id}>
                             <header>{product.name}</header>
-                            <header>${product.pricePerUnit.toFixed(2)}</header>
+                            <header>${product.pricePerUnit}</header>
                             <footer> {product.pricePerUnit > 2 ? "💲": ""} </footer>
                         </section>
                     }

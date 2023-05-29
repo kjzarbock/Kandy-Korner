@@ -9,7 +9,7 @@ export const ApplicationViews = () => {
             <Route path="/" element={
                 <>
                     <h1>Kandy Korner</h1>
-                    <div class="tag">Your one-stop-shop to get your fix! Happy Pride Y'all!!</div>
+                    <div className="tag">Your one-stop-shop to get your fix! Happy Pride Y'all!!</div>
 
                     <Outlet />
                 </>

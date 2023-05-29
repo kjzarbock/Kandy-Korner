@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 export const ProductForm = () => {
@@ -7,6 +7,7 @@ export const ProductForm = () => {
         initial state object
     */
     const [product, update] = useState({
+        id: 0,
         name: "",
         productTypeId: 0,
         pricePerUnit: 0,
@@ -17,8 +18,10 @@ export const ProductForm = () => {
     */
    const navigate = useNavigate()
 
+    const [productTypes, setProductTypes] = useState([])
     const localKandyUser = localStorage.getItem("kandy_user")
     const kandyUserObject = JSON.parse(localKandyUser)
+
 
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
@@ -33,7 +36,7 @@ export const ProductForm = () => {
 } */
 
     const productToSendToAPI = {
-        userId: kandyUserObject.id,
+        id: product.id,
         name: product.name,
         productTypeId: product.productTypeId,
         pricePerUnit: product.pricePerUnit,
@@ -49,10 +52,22 @@ export const ProductForm = () => {
     })
         .then(response => response.json())
         .then(() =>{
-            navigate("/products/create")
+            navigate("/products")
         })
 
     }
+
+    useEffect(
+        () => 
+        {
+            fetch(`http://localhost:8088/productTypes`)
+            .then(response => response.json())
+            .then((productTypeArray) => {
+                setProductTypes(productTypeArray)
+            })
+        },
+        []
+    )
 
     return (
         <form className="productForm">
@@ -95,21 +110,23 @@ export const ProductForm = () => {
                 </div>
             </fieldset>
             <fieldset>
-  <legend></legend>
   <div className="form-group">
     <label htmlFor="productType">Product Type</label>
     <select
-      id="productType"
+      required autoFocus
+        className="form-control"
+        placeholder="Product Type"
       value={product.productTypeId}
       onChange={(evt) => {
-        const updatedProduct = { ...product, productTypeId: evt.target.value };
-        update(updatedProduct);
+        const copy = { ...product};
+        copy.productTypeId = evt.target.value
+        update(copy);
       }}
     >
-      <option value="hardCandy">Hard Candy</option>
-      <option value="gum">Gum</option>
-      <option value="chocolate">Chocolate</option>
-      <option value="soda">Soda</option>
+<option value="" defaultValue>Select Candy Type</option>
+            {productTypes.map(item => (
+                <option value={item.id} key={item.id}>{item.type}</option>
+            ))}
     </select>
   </div>
 </fieldset>
@@ -122,3 +139,5 @@ export const ProductForm = () => {
         </form>
     )
 }
+
+
